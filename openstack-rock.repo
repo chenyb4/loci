@@ -1,0 +1,7 @@
+[rock]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+baseurl=http://192.168.8.167/openstack/rock/
+enable=1
+gpgcheck=0
+

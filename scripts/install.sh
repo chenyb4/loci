@@ -30,10 +30,8 @@ case ${distro} in
         yum upgrade -y
         yum install -y --setopt=skip_missing_names_on_install=False \
             git \
-            patch \
             redhat-lsb-core \
             sudo \
-            ${rpm_python_packages[@]}
         ;;
     opensuse|opensuse-leap|sles)
         if [[ "${PYTHON3}" == "no" ]]; then
@@ -66,26 +64,23 @@ if [[ "${PROJECT}" == "requirements" ]]; then
     exit 0
 fi
 
-$(dirname $0)/fetch_wheels.sh
-if [[ "${PROJECT}" == "infra" ]]; then
-   $(dirname $0)/setup_pip.sh
-    $(dirname $0)/pip_install.sh bindep ${PIP_PACKAGES}
-    $(dirname $0)/install_packages.sh
-    $(dirname $0)/cleanup.sh
-    exit 0
-fi
+#$(dirname $0)/fetch_wheels.sh
+#if [[ "${PROJECT}" == "infra" ]]; then
+#   $(dirname $0)/setup_pip.sh
+#    $(dirname $0)/pip_install.sh bindep ${PIP_PACKAGES}
+#    $(dirname $0)/install_packages.sh
+#    $(dirname $0)/cleanup.sh
+#    exit 0
+#fi
 if [[ "${PLUGIN}" == "no" ]]; then
     $(dirname $0)/create_user.sh
-    $(dirname $0)/setup_pip.sh
-    $(dirname $0)/pip_install.sh bindep
-    PACKAGES=($(bindep -f /opt/loci/pydep.txt -b -l newline ${PROJECT} ${PROFILES} ${python3} || :))
-    $(dirname $0)/pip_install.sh ${PACKAGES[@]}
 fi
 
 if [[ ${PROJECT} == 'nova' ]]; then
     $(dirname $0)/install_nova_console.sh
 fi
-$(dirname $0)/clone_project.sh
 $(dirname $0)/install_packages.sh
-$(dirname $0)/pip_install.sh /tmp/${PROJECT} ${PIP_PACKAGES}
+if [[ ${PROJECT} == 'keystone' ]] || [[ ${PROJECT} == 'nova' ]]; then
+    $(dirname $0)/httpd_config.sh
+fi
 $(dirname $0)/cleanup.sh

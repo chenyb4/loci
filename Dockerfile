@@ -1,10 +1,8 @@
-ARG FROM=ubuntu:xenial
-FROM ${FROM}
+FROM centos:latest
 
 ENV PATH=/var/lib/openstack/bin:$PATH
 ARG PROJECT
 ARG WHEELS=loci/requirements:master-ubuntu
-ARG PROJECT_REPO=https://git.openstack.org/openstack/${PROJECT}
 ARG PROJECT_REF=master
 ARG DISTRO
 ARG PROFILES
@@ -13,6 +11,7 @@ ARG PIP_ARGS=""
 ARG DIST_PACKAGES=""
 ARG PLUGIN=no
 ARG PYTHON3=no
+ARG OPG
 
 ARG UID=42424
 ARG GID=42424
@@ -23,6 +22,8 @@ ARG SPICE_REPO=https://gitlab.freedesktop.org/spice/spice-html5.git
 ARG SPICE_REF=spice-html5-0.1.6
 
 COPY scripts /opt/loci/scripts
-COPY bindep.txt pydep.txt /opt/loci/
+COPY ceph_stable.repo epel.repo openstack-rock.repo qemu-kvm.repo /etc/yum.repos.d/ 
 
 RUN /opt/loci/scripts/install.sh
+ENV TZ=Asia/Shanghai 
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

@@ -1,0 +1,7 @@
+[qemu]
+name=Extra Packages for QEMU
+#baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+baseurl=http://192.168.8.167/QEMU/
+failovermethod=priority
+enabled=1
+gpgcheck=0
