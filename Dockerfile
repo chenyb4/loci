@@ -24,6 +24,6 @@ ARG SPICE_REF=spice-html5-0.1.6
 COPY scripts /opt/loci/scripts
 COPY ceph_stable.repo epel.repo openstack-rock.repo qemu-kvm.repo /etc/yum.repos.d/ 
 
-RUN /opt/loci/scripts/install.sh
+RUN scripts/install.sh
 ENV TZ=Asia/Shanghai 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
